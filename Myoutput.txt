@@ -1,0 +1,78 @@
+===Movie Library System===
+
+===addUser() method test===
+User 1 has been added
+User 2 has been added
+User 3 has been added
+
+===addMovie() method test===
+Movie 1 has been added
+Movie 2 has been added
+Movie 5 has been added
+Movie 3 has been added
+Movie 4 has been added
+Movie 44 has been added
+Movie 44 already exists
+Movie 44 already exists
+
+===showAllMovie() method test===
+Movie id - Movie name - Year - Status
+1 Diner 1982 STATUS
+44 Bowery at Midnight 1942 STATUS
+4 Make Mine Mink 1960 STATUS
+3 Love Kills 1991 STATUS
+5 At Close Range 1986 STATUS
+2 Dead-Bang 1989 STATUS
+
+===checkoutMovie() method test===
+Movie 1 has been added
+Movie 1 has been checked out by User 1
+Movie 5 has been added
+Movie 5 has been checked out by User 1
+Movie 4 has been added
+Movie 4 has been checked out by User 3
+
+===showAllMovie() method test===
+Movie id - Movie name - Year - Status
+1 Diner 1982 STATUS
+44 Bowery at Midnight 1942 STATUS
+4 Make Mine Mink 1960 STATUS
+3 Love Kills 1991 STATUS
+5 At Close Range 1986 STATUS
+2 Dead-Bang 1989 STATUS
+
+===showMovie() method test===
+4 Make Mine Mink 1960 Checked out by User -usernumber-
+There s no movie with that id: 222
+2 Dead-Bang 1989 Checked out by User -usernumber-
+
+===showUser() method test===
+User id: 1 User name: Jamie Lannister
+User 1 checked out the following Movies:
+Movie id - Movie name - Year
+1 Diner 1982
+5 At Close Range 1986
+
+===deleteMovie() method test===
+2Movie with this id: 44 has been deleted
+2Movie with this id: 4 has been deleted
+
+===showAllMovie() method test===
+Movie id - Movie name - Year - Status
+1 Diner 1982 STATUS
+3 Love Kills 1991 STATUS
+5 At Close Range 1986 STATUS
+2 Dead-Bang 1989 STATUS
+
+===returnMovie() method test===
+
+===showAllMovie() method test===
+Movie id - Movie name - Year - Status
+1 Diner 1982 STATUS
+3 Love Kills 1991 STATUS
+5 At Close Range 1986 STATUS
+2 Dead-Bang 1989 STATUS
+
+===deleteUser() method test===
+User 1 has been deleted
+User 2 has been deleted
