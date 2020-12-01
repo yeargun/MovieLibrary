@@ -18,6 +18,8 @@ public:
     void deleteUser(int id);
     void displayUsers();
     void showUser(int id);
+    User* theUserWhoWatchedGivenId(int movieId);
+    User* userWithGivenId(int id);
 };
 
 

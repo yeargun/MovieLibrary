@@ -12,7 +12,10 @@ public:
     int year;
     int id;
     string name;
+    int checkedBy;
     bool isChecked;
+    Movie();
+    void printMovieStatus(Movie* movie);
     Movie* movieWithGivenId(int movieId);
     bool newMovieIsUnique(const int movieId, const std::string movieName, const int movieYear);
     void addMovie(int id, std::string name, int year);
@@ -20,6 +23,7 @@ public:
     void deleteMovie(int id);
     void showAllMovies();
     Movie* checkAndReturn(int id);
+    int returnMovie(int id);
 };
 
 

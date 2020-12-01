@@ -12,6 +12,7 @@ addMovie	44	The Deep	1997
 showAllMovie
 checkoutMovie	1	1
 checkoutMovie	5	1
+checkoutMovie	5	3
 checkoutMovie	4	3
 showAllMovie
 showMovie	4

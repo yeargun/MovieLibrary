@@ -16,16 +16,29 @@ void User::displayCheckedMovies(){
         tempMovie= tempMovie->nextMovie;
     }while(tempMovie!= this->checkedMovies);
 }
-
+User* User::userWithGivenId(int id){
+    if(this->nextUser==NULL)
+        return NULL;
+    User* tempUser= this;
+    do{
+        if(tempUser->id == id)
+            return tempUser;
+        tempUser=tempUser->nextUser;
+    }while (tempUser!=this);
+    return NULL;
+}
 void User::checkOutMovie (Movie* movie, int userId) {
     if(movie == NULL){return;}
     if(this->nextUser==NULL){
-        cout<<"Theres no1 with given userıd: "<<userId<<endl;
+        cout<< "Movie with the id "<<movie->id<<" does not exist\n";
+        return;
+    }
+    if(movie->isChecked){
+        cout<<"Its already checked out by user "<<movie->checkedBy<<endl;
         return;
     }
     User* tempUser = this;
     do{
-        //cout<<"user ccheckoutmovie func ici, tempuser->id: "<<tempUser->id<<endl;
         if(tempUser->id == userId){
             const int movieId = movie->id;
             const int movieYear = movie->year;
@@ -34,6 +47,8 @@ void User::checkOutMovie (Movie* movie, int userId) {
             tempUser->checkedMovies->addMovie(movieId, movieName, movieYear);
             // cout<<"sadgsagaa";
             cout<<"Movie "<<movie->id<< " has been checked out by User "<<tempUser->id<<endl;
+            movie->isChecked = true;
+            movie->checkedBy = tempUser->id;
             return;
         }
         tempUser = tempUser->nextUser;
@@ -205,4 +220,13 @@ void User::showUser(int id) {
         tempUser=tempUser->nextUser;
     }
     cout << "There s no user with that id\n";
+}
+User* User::theUserWhoWatchedGivenId(int movieId) {
+    if(this->nextUser==NULL){
+        return NULL;
+    }
+    User* tempUser=this;
+    do{
+        //if()
+    }while (tempUser!=this);
 }
