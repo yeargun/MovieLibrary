@@ -1,11 +1,10 @@
-
 #include "Movie.h"
 
 extern ofstream output;
 Movie::Movie(){
     isChecked=false;
 }
-void Movie::printMovieStatus(Movie* movie){
+void Movie::printMovieStatus(Movie* movie){//prints out the User who has checked given movie
     if(movie->isChecked){
         output<<" Checked out by User "<<movie->checkedBy<<endl;
     }
@@ -25,7 +24,7 @@ Movie* Movie::movieWithGivenId(int movieId){
     }while(tempMovie!= this);
     return NULL;
 }
-bool Movie::newMovieIsUnique(const int movieId, const string movieName, const int movieYear) {
+bool Movie::newMovieIsUnique(const int movieId) {
     if(movieWithGivenId(movieId)==NULL)
         return true;
     else
@@ -33,7 +32,7 @@ bool Movie::newMovieIsUnique(const int movieId, const string movieName, const in
 
 }
 void Movie::addMovie(int id, string name, int year) {
-    if (!newMovieIsUnique(id, name, year)) {
+    if (!newMovieIsUnique(id)) {
         output << "Movie "<<id<<" already exists\n";
         return;
     }
@@ -77,8 +76,6 @@ void Movie::deleteMovie(int id) {
     else{
         output<<"Movie "<<id<<" has not been checked out\n";
     }
-
-
     if (this->id == id) {
         output << "Movie " << id << " has been deleted\n";
         if (this->nextMovie == this) {
@@ -107,46 +104,6 @@ void Movie::deleteMovie(int id) {
         tempMovie = tempMovie->nextMovie;
     } while (tempMovie != this);
     output<< "Movie with this id " << id << " doesnt exists\n";
-}
-void Movie::deleteMovie(int id,bool silent) {
-    Movie* tempMovie=movieWithGivenId(id);
-    if(tempMovie==NULL){
-        return;
-    }
-    if(tempMovie->isChecked){
-    }
-    else{
-    }
-    if (this->nextMovie == NULL) { // if there s no movie in list
-        return;
-    }
-
-    if (this->id == id) {
-        if (this->nextMovie == this) {
-            this->nextMovie = NULL;
-            this->isChecked = false;
-            return;
-        }
-        else {
-            this->id = this->nextMovie->id;
-            this->name = this->nextMovie->name;
-            this->year = this->nextMovie->year;
-            this->nextMovie = this->nextMovie->nextMovie;
-            this->isChecked = this->nextMovie->isChecked;
-            return;
-        }
-    }
-    Movie* tempMoviePrev = this;
-    tempMovie = this->nextMovie;
-    do {
-        if (tempMovie->id == id) {
-            tempMoviePrev->nextMovie = tempMovie->nextMovie;
-            return;
-        }
-        tempMoviePrev = tempMoviePrev->nextMovie;
-        tempMovie = tempMovie->nextMovie;
-    } while (tempMovie != this);
-
 }
 void Movie::showAllMovies() {
     output << "Movie id - Movie name - Year - Status\n";
@@ -178,11 +135,10 @@ int Movie::returnMovie(int id) {
         output<<"Movie "<<id<<" has not been checked out\n";
         return -1;
     }
-
-
 }
+//same as addMovie(int id,string name,int year), but it doesnt prints something
 void Movie::addMovie(int id, string name, int year, bool silent) {
-    if (!newMovieIsUnique(id, name, year)) {
+    if (!newMovieIsUnique(id)) {
         return;
     }
     if (this->nextMovie == NULL) {
@@ -199,9 +155,38 @@ void Movie::addMovie(int id, string name, int year, bool silent) {
     newMovie->nextMovie = this->nextMovie;
     this->nextMovie = newMovie;
 }
-
-Movie* Movie::checkAndReturn(int id){
-
+//same as deleteMovie(int id), but it doesnt prints out something
+void Movie::deleteMovie(int id,bool silent) {
+    Movie* tempMovie=movieWithGivenId(id);
+    if(tempMovie==NULL){
+        return;
+    }
+    if (this->nextMovie == NULL) { // if there s no movie in list
+        return;
+    }
+    if (this->id == id) {
+        if (this->nextMovie == this) {
+            this->nextMovie = NULL;
+            this->isChecked = false;
+            return;
+        }
+        else {
+            this->id = this->nextMovie->id;
+            this->name = this->nextMovie->name;
+            this->year = this->nextMovie->year;
+            this->nextMovie = this->nextMovie->nextMovie;
+            this->isChecked = this->nextMovie->isChecked;
+            return;
+        }
+    }
+    Movie* tempMoviePrev = this;
+    tempMovie = this->nextMovie;
+    do {
+        if (tempMovie->id == id) {
+            tempMoviePrev->nextMovie = tempMovie->nextMovie;
+            return;
+        }
+        tempMoviePrev = tempMoviePrev->nextMovie;
+        tempMovie = tempMovie->nextMovie;
+    } while (tempMovie != this);
 }
-
-

@@ -1,17 +1,13 @@
-
 #include "User.h"
-
-
 extern ofstream output;
-User* nextUser = NULL;
-User* previousUser = NULL;
-Movie* checkedMovies = new Movie();
-int id = 0;
-string name;
-User::User(){
 
+User::User(int id,string name){
+    this->id = id;
+    this->name = name;
 }
-void User::displayCheckedMovies(){
+User::User()=default;
+void User:: displayCheckedMovies()const{
+    //prints out the all checkedMovies by that user
     if(this->checkedMovies->nextMovie==NULL)
         return;
     output<<"Movie id - Movie name - Year\n";
@@ -22,6 +18,8 @@ void User::displayCheckedMovies(){
     }while(tempMovie!= this->checkedMovies);
 }
 User* User::userWithGivenId(int id){
+    //returns the User's pointer with given id.
+    //if there s no user with given id, returns NULL
     if(this->nextUser==NULL)
         return NULL;
     User* tempUser= this;
@@ -50,94 +48,56 @@ void User::checkOutMovie (Movie* movie, int userId,int movieId) {
     movie->isChecked = true;
     movie->checkedBy = tempUser->id;
 }
-bool User::isUniqueUser(int id) {
-    if (this->nextUser == NULL)
-        return true;
-    User* tempUser=this;
-    do{
-        if (tempUser->id == id)
-            return false;
-        tempUser=tempUser->nextUser;
-    }while(tempUser!=this);
-    return true;
-}
 void User::addUser(int id, string name) {
-    if (!isUniqueUser(id)) {
+    //lets say we have 3 users and the way their nextpointers work is like that
+    // User1 -> User2 -> User3 ->User1
+    //when we try to add User4 to this linked list
+    //it adds like this : User1->User4->User2->User3->User1
+    if (userWithGivenId(id)!=NULL) {
         output << "User "<<id<<" already exists\n";
         return;
     }
-    User* newUser = new User();
-    newUser->id = id;
-    newUser->name = name;
-    if (this->nextUser == NULL) {
+    if (this->nextUser == NULL) {//if there s no user
         this->id = id;
         this->name = name;
         this->previousUser = this;
         this->nextUser = this;
         output << "User " << this->id << " has been added\n";
-        //cout << "Has been added(id / name): " << this->id << "   " << this->name << endl;
         return;
-
     }
-    else if (this->nextUser == this) { //if linkedlist has 1 user
+    User* newUser = new User(id,name);
+    if (this->nextUser == this) { //if there s only 1 user
         this->nextUser = newUser;
         this->previousUser = newUser;
         newUser->previousUser = this;
         newUser->nextUser = this;
         output << "User " << newUser->id << " has been added\n";
-        /*cout << "Has been added(id / name): " << newUser->id << "   " << newUser->name << endl;
-        cout << "It's prev is this " << newUser->previousUser->id << "   " << newUser->previousUser->name << endl;
-        cout << "It's next is this " << newUser->nextUser->id << "   " << newUser->nextUser->name << endl;
-        cout << "--------------------------\n";*/
     }
     else {
-        User* secondUser = this->nextUser;
+        User* oldSecondUser = this->nextUser;
         this->nextUser = newUser;
-        this->previousUser = secondUser;
         newUser->previousUser = this;
-        newUser->nextUser = secondUser;
-        secondUser->previousUser = newUser;
+        newUser->nextUser = oldSecondUser;
+        oldSecondUser->previousUser = newUser;
         output << "User " << newUser->id << " has been added\n";
-        /*cout << "33Has been added(id / name): " << newUser->id << "   " << newUser->name << endl;
-        cout << "It's prev is this " << newUser->previousUser->id << "   " << newUser->previousUser->name << endl;
-        cout << "It's next is this " << newUser->nextUser->id << "   " << newUser->nextUser->name << endl;
-        cout << "--------------------------\n";*/
     }
 }
-void User::checkFilm(int movieId, int userId) {
-    User* firstUserPointer = this;
-    bool filmHasChecked = false;
-    if (this->nextUser == this) {
-        if(this->id == userId)
-            //this->checkedMovies.add
-            return;
-    }
-    while (this->nextUser != firstUserPointer) {
-        if (this->id == userId) {
-            //this->checkedMovies.add(moviedId)
-        }
-    }
-    if (filmHasChecked) {
-        //
-    }
-    else {
-        output << "THERE S NO SUCH FILM EXISTS\n";
-    }
-}
-void User::deleteUser(int id, Movie* wholeMovies) {//maybe when i delete a user, the noncheckedfilms number can increase tho
+void User::deleteUser(int id, Movie* wholeMovies) {
     User* tempUser = userWithGivenId(id);
     if (tempUser == NULL) {
         output << "User "<<id<<" does not exist\n";
         return;
     }
     Movie* tempMovie=tempUser->checkedMovies;
+    //when an user has deleted, the movies he checkedOut, gets removed from LibrarySystem
     if(tempMovie->nextMovie!=NULL){
         do{
             wholeMovies->deleteMovie(tempMovie->id,true);
+            //deleteMovie(int id, bool something), if deleteMovie has called with bool variable, that means that
+            //it wont print out the deletion details.
             tempMovie=tempMovie->nextMovie;
         }while (tempMovie!=tempUser->checkedMovies);
     }
-
     if (this->nextUser == this) { //Assigning null to head's next, tells the program that, theres no movie in the movielist
         if(this->id == id){
             this->nextUser = NULL;
@@ -158,8 +118,6 @@ void User::deleteUser(int id, Movie* wholeMovies) {//maybe when i delete a user,
         this->nextUser = this->nextUser->nextUser;
         return;
     }
-
-
     if (tempUser->nextUser == this) {
         tempUser->previousUser->nextUser = this;
         this->previousUser = tempUser->previousUser;
@@ -171,36 +129,14 @@ void User::deleteUser(int id, Movie* wholeMovies) {//maybe when i delete a user,
         tempUser->nextUser = tempUser->nextUser->nextUser;
     }
     output << "User " << id << " has been deleted\n";
-    return;
-}
-
-
-void User::displayUsers() {
-    if(this->nextUser==NULL){
-        output<<"theres no users\n";return;
-    }
-    User* tempUser=this;
-    do{
-        output << "Current Users: " << tempUser->id << '\t' << tempUser->name << endl;
-        tempUser=tempUser->nextUser;
-    }while(tempUser!=this);
 }
 void User::showUser(int id) {
     User* tempUser=userWithGivenId(id);
     if(tempUser==NULL){
-        output << "There s no user with that id\n";
+        output << "User "<<id<<" does not exist\n";
         return;
     }
     output<<"User id: "<<tempUser->id<<" User name: "<<tempUser->name<<endl;
     output<<"User "<<tempUser->id<< " checked out the following Movies:\n";
     tempUser->displayCheckedMovies();
-}
-User* User::theUserWhoWatchedGivenId(int movieId) {
-    if(this->nextUser==NULL){
-        return NULL;
-    }
-    User* tempUser=this;
-    do{
-        //if()
-    }while (tempUser!=this);
 }

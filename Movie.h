@@ -1,5 +1,5 @@
-#ifndef KINDABORED_MOVIE_H
-#define KINDABORED_MOVIE_H
+#ifndef MOVIE_H
+#define MOVIE_H
 
 #include <iostream>
 #include <iostream>
@@ -17,16 +17,13 @@ public:
     Movie();
     void printMovieStatus(Movie* movie);
     Movie* movieWithGivenId(int movieId);
-    bool newMovieIsUnique(const int movieId, const std::string movieName, const int movieYear);
+    bool newMovieIsUnique(const int movieId);
     void addMovie(int id, std::string name, int year);
     void showMovie(int id);
     void deleteMovie(int id);
     void showAllMovies();
-    Movie* checkAndReturn(int id);
     int returnMovie(int id);
     void addMovie(int id, std::string name, int year,bool silent);
     void deleteMovie(int id,bool silent);
 };
-
-
-#endif //KINDABORED_MOVIE_H
+#endif //MOVIE_H
