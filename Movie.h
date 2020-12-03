@@ -24,6 +24,8 @@ public:
     void showAllMovies();
     Movie* checkAndReturn(int id);
     int returnMovie(int id);
+    void addMovie(int id, std::string name, int year,bool silent);
+    void deleteMovie(int id,bool silent);
 };
 
 

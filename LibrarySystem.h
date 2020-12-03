@@ -2,6 +2,9 @@
 #define UNTITLED_LIBRARYSYSTEM_H
 #include "Movie.h"
 #include "User.h"
+#include <fstream>
+
+
 class LibrarySystem {
 private:
     Movie* movies = new Movie();
@@ -13,8 +16,9 @@ public:
     LibrarySystem();
     ~LibrarySystem();
     void displayUsers();
+    bool availableForCheckingOut(int movieId);
     bool differentThanLastCalledFunction(int functionNumber);
-
+    void updateUsersCheckedMovies(int movieId);
     void addMovie(const int movieId, const string movieTitle, const int year);
     void deleteMovie(const int movieId);
 
@@ -26,6 +30,7 @@ public:
     void showAllMovies();
     void showMovie(const int movieId);
     void showUser(const int userId);
+    void updateNonCheckedMovies();
 };
 
 
